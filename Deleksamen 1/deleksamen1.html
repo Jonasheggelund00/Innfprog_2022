@@ -24,8 +24,8 @@
 
         //Klargjør variabler for utregning
         const startingPoint = 255
-        const checksum = 765
-        //endra fra 0 til 765
+        let checksum = 0
+             //linje 27 endra jeg fra const til let fordi jeg prøve checksummen på linje 43
         const multiplier = 3
         //Ditt navn. PS: Bytt denne til ditt navn.
           // satt inn en / på teksten (linje 29) fordi var en kommentar
@@ -35,7 +35,7 @@
 
         //Klargjør variabel for bygging av tekst
         let greeting = ""; 
-            // fjerna en t fra "let" (linje 35) fordi det skal være en t.
+            // fjerna en t fra "let" (linje 35) fordi det bare skal være en t.
         const saluteClass = "pyro";
 
         //Kontroller datatype
@@ -49,20 +49,19 @@
 
         //Kontroller checksum
         if(checksum !== 765) {
-            // fjerna ett = tegn fra linje 47
+            // fjerna ett = tegn fra linje 52
             greeting = "beklager"
         } else {
             greeting = "Gratulerer"
             // stor bokstav på G, linje 55
-            const output = greeting + "Gratulerer" + myName + "<br />Du klarte det!"
+            const output = greeting + ", " + myName + "<br />Du klarte det!"
             //Greeting på linje 55 hadde tre e`er, så jeg fjerna en av dem
-            //skal stå Gratulerer mellom gåsetegnene fordi det er en del av teksten som skal komme opp.
-            const textElement = document.getElementById("TEXT");
-            const saluteElement = document.getElementByID("salute")
+        
+            const textElement = document.getElementById("text"); //endra til små bokstaver fordi det må være likt med "text" på linje 11.
+            const saluteElement = document.getElementById("salute") // endra til liten D i getElementById fordi det er skrevet feil
             textElement.removeAttribute("class")
             textElement.innerHTML = output
-            saluteElement.setAttribute("class","saluteclass")
-            // satt to gåsetegn på saluteclass, linje 57
+            saluteElement.setAttribute("class",saluteClass) //I denne linja ga jeg saluteClass en stor C.
             document.body.setAttribute("class","success");
             // satt på ; på linje 61 fordi det er et slutt tegn. 
         }
