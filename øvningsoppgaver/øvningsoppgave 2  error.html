@@ -1,0 +1,20 @@
+<p id="melding"></p>
+
+<script>
+//Vi har hentet brukerinformasjon, og lagret navnet til brukeren i en variabel kalt user_name
+const user_name = "Jonas"
+
+//Vi har hentet fødselsåret til brukere n  og lagret det i variabelen user_birthday
+const user_birthyear = 2000
+
+//Vi regner ut alder ved å ta året vi er i minus fødselsåret, og lagrer svaret i en ny variabel kalt age
+const  age = 2022 - user_birthyear
+
+//så lager vi en tekst for utskrift ved hjelp av kontaktinering
+const utskrift = "Hei " + user_name + " (" + age + "år)";
+
+//..og skriver den ut til elementet med id meldingen
+document.getElementById("melding").innerHTML = utskrift
+
+
+</script>
