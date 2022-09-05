@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>betinget logikk cheat sheet</title>
+</head>
+<body>
+    <h2>Er du myndig?</h2>
+    <p id="myndig-utskrift"></p>
+
+    <h2>Har fått tilgang:</h2>
+    <p id="tilgang-utskrift"></p>
+
+    <h2>Er vi i gang?</h2>
+    <div id="igang-utskrift"></div>
+
+    <script>
+const age = 22
+//if-test for å sjekke om alder er 18 år eller over
+
+// >= 18 eller over, >17 større enn 17
+if (age >=18) {
+    document.getElementById("myndig-utskrift"). innerHTML = "Ja"
+
+     } else {
+    document.getElementById("myndig-utskrift"). innerHTML = "Nei"
+     }
+
+     // tilgangssjekk:
+     const userInput = 1234
+     const te = document.getElementById("tilgang-utskrift")
+     if(userInput === 1234) {
+        te .innerHTML = "Innvilget" //te= document.getElementById
+     } else if(userInput === 4321) {
+        te. innerHTML = "Innvilget"
+     } else if(userInput === 3333) {
+        te. innerHTML = "innvilget"
+     } else {
+        te.innerHTML = "Avvist"
+     }
+
+     // kan også skrves med: (|| = eller)
+    //if(userInput = 1234 || userInput= 4321 || userInput = 3333)
+
+    //Igangsjekk
+    const iGangDiv = document.getElementById("igang-utskrift")
+    const time = 7
+    const awake = time > 6 ? true : false 
+    //
+     iGangDiv.innerHTML = `<p>${awake ? "Du er våken" : "Du sover"}</p>`
+
+    </script>
+</body>
+</html>
