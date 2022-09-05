@@ -25,45 +25,45 @@
         //Klargjør variabler for utregning
         const startingPoint = 255
         let checksum = 0
-             //linje 27 endra jeg fra const til let fordi jeg prøve checksummen på linje 43
+             // Feil 1. her Endra jeg fra const til let fordi jeg prøve checksummen på linje 43
         const multiplier = 3
-        //Ditt navn. PS: Bytt denne til ditt navn.
-          // satt inn en / på teksten (linje 29) fordi var en kommentar
+        //Ditt navn. PS: Bytt denne til ditt navn. // satt inn en / på teksten fordi var en kommentar
+          
         //Selve navnebyttet er ikke en feil som teller mot de 10 feilene du skal finne.
-        const myName = "Jonas";
-             //linje 33, la på eget navn i gåsetegn
+        const myName = "Jonas"; //Feil 2.  La på eget navn i gåsetegn
+             
 
         //Klargjør variabel for bygging av tekst
-        let greeting = ""; 
-            // fjerna en t fra "let" (linje 35) fordi det bare skal være en t.
+        let greeting = ""; //Feil 3.  fjerna en t fra "let" fordi det bare skal være en t.
+            
         const saluteClass = "pyro";
 
         //Kontroller datatype
         if (typeof myName === "string") {
-            checksum = startingPoint * multiplier
-            //Checksum på linje 39 hadde to m`er, så jeg fjerna to av dem
+            checksum = startingPoint * multiplier //Feil 4. Checksum hadde to m`er, så jeg fjerna to av dem
+            
 
         } else {
             checksum = startingPoint
         }
 
         //Kontroller checksum
-        if(checksum !== 765) {
-            // fjerna ett = tegn fra linje 52
+        if(checksum !== 765) { //Feil 5. fjerna ett = tegn
+            
             greeting = "beklager"
         } else {
             greeting = "Gratulerer"
-            // stor bokstav på G, linje 55
-            const output = greeting + ", " + myName + "<br />Du klarte det!"
-            //Greeting på linje 55 hadde tre e`er, så jeg fjerna en av dem
+            // stor bokstav på G, linje 55 (usikker)
+            const output = greeting + ", " + myName + "<br />Du klarte det!"   //Feil 6. Greeting hadde tre e`er, så jeg fjerna en av dem
         
-            const textElement = document.getElementById("text"); //endra til små bokstaver fordi det må være likt med "text" på linje 11.
-            const saluteElement = document.getElementById("salute") // endra til liten D i getElementById fordi det er skrevet feil
+        
+            const textElement = document.getElementById("text"); //Feil 7. Endra til små bokstaver fordi det må være likt med "text" på linje 11.
+            const saluteElement = document.getElementById("salute") //Feil 8. Endra til liten D i getElementById fordi det er skrevet feil
             textElement.removeAttribute("class")
             textElement.innerHTML = output
-            saluteElement.setAttribute("class",saluteClass) //I denne linja ga jeg saluteClass en stor C.
-            document.body.setAttribute("class","success");
-            // satt på ; på linje 61 fordi det er et slutt tegn. 
+            saluteElement.setAttribute("class",saluteClass) //Feil 9. I denne linja ga jeg saluteClass en stor C.
+            document.body.setAttribute("class","success")
+         
         }
 
         /*
