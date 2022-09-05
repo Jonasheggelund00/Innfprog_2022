@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ovning2</title>
+</head>
+<body>
+
+<h1>Er jeg klar for aribeidsivet?</h1>
+
+<h2>Jeg er 22 år gammel</h2>
+
+
+<h2>Er jeg myndig?</h2>
+<p id="myndighet-utskrift"></p>
+
+
+    <script>
+
+        const age = 22
+
+        if (age < 18) {
+            document.getElementById("myndighet-utskrift"). innerHTML = "Du er ikke myndig"
+            
+        } else if (age >= 18 && age <= 62) {
+            document.getElementById("myndighet-utskrift"). innerHTML = "Du er myndig og klar for studier eller arbeidslivet"
+
+        } else {
+            document.getElementById("myndighet-utskrift"). innerHTML = "Du er pensjonsklar!"
+        }
+       
+
+/*
+
+ let age = 22
+        
+        if (age >= 18 || <= 62)
+        document.getElementById("myndig-utskrift"). innerHTML = "Du er myndig og klar for studier eller arbeidslivet"
+*/
+
+
+
+
+    </script>
+</body>
+</html>
