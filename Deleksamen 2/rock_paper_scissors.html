@@ -139,7 +139,7 @@
             <!-- HTML element to show computer selection -->
         </div>
         <div id="winner">
-            <!-- HTML element to show winner -->f
+            <!-- HTML element to show winner -->   
             
         </div>
         <div id="counterBox">
@@ -147,7 +147,12 @@
             <!-- A hidden button to show after a game, that resets and let the player play again -->
             <button id="replay" onClick="restartGame()">Play again</button>
         </div>
-        
+            <!--Oppgave 6 HTML-->
+            <div>Player wins: <span id="playerCounter">0</span> </div>
+            <div>Computer wins: <span id="computerCounter">0</span> </div>
+            <div>Draws: <span id="drawsCounter">0</span> </div>
+
+    </div>
     </section>
 
     <script>
@@ -156,6 +161,11 @@
         let winner = ""
         //And prepare a counter-variable for number of games played:
         let counter = 0
+        // Del av oppgave 6
+        let playerCounter = 0
+        let computerCounter = 0
+        let drawsCounter = 0
+      
         //Make available signs available in code as an array
         const signs = ["rock", "paper", "scissors"]
         
@@ -181,6 +191,7 @@
         // We pass one parameter: "playerSign", which is a text string indicating
         // the player's choice (rock, paper or scissors)
         function play(playerSign) {
+            document.getElementById("winner").innerHTML = "*Drumroll*" //Del av oppgave 7: Viser brukeren at man venter på svar
             console.log("Player selected: " + playerSign)
             // First, we mark the players choice by making selection visible (display: block)
             const selection = document.getElementById("selection")
@@ -251,55 +262,98 @@
                 }
             }
 
-            
+             
+
             //Now we have checks to set the winner. Let's write it to the website.
             //Now you know the drill: show #winner by display: block and fill it with HTML:
             const winnerDiv = document.getElementById("winner")
             winnerDiv.style.display = "block"
+            
+            
 
-            winnerDiv.innerHTML = "The winner is " + winner
+            //winnerDiv.innerHTML = "The winner is " + winner
             /* OPPGAVE 2.2: FORKLAR HVA SOM SKJER PÅ LINJE 254
              * _På linje 254 skjer det en utskrift av hvem som er vinneren
              winnerDiv er bare en betyr: document.getElementById("winner") _ 
              */
-
+            //oppgave 7
+            
+           
              //oppgave 3 - endre farge på <div> id winner til gull
             if (winner)  { 
                 document.getElementById("winner").style.backgroundColor = "Gold";
             }
-            //Gjorde teksten svart for bedre leslighet
+            //Gjorde teksten grå for bedre leslighet
             if (winner) {
-                document.getElementById("winner").style.color = "#363331"; 
+                document.getElementById("winner").style.color = "#4b4737"; 
             }
+            
+
             
 
             //Now, lastly, let's update the counter on how many games we have played:
             counter = counter + 1
+            
 
             document.getElementById("counter").innerHTML = counter
             /* OPPGAVE 2.3: FORKLAR HVA SOM SKJER PÅ LINJE 262
              * _Linje 262 skriver ut hvor mange ganger man har spilt på nytt_ 
              */
-            
+
              // oppgave 4
              if (counter > 1) { 
                 document.getElementById("counter").style.color = "#be5944";
              }
-             
-             // oppgave 5
-             if (winner === "player") {
-            document.getElementById("winner").innerHTML ="You win"
+            
+             // oppgave 5 Og 7
+                 setTimeout(function() { 
+                 if (winner === "player") {
+                     winnerDiv.innerHTML ="You win";
+
+                 } else if (winner === "computer") {
+                     winnerDiv.innerHTML ="You lose";
+
+                 } else if (winner === "undecided") {
+                     winnerDiv.innerHTML ="It's a tie";
+                }}, 1000);
+        
+            
+
+            //oppgave 6 - JavaScript del
+
+           const playerCounterSpan = document.getElementById("playerCounter")
+           const computerCounterSpan = document.getElementById("computerCounter")
+
+            if (winner === "player") {
+                playerCounter = playerCounter + 1
+                playerCounterSpan.innerHTML = playerCounter;
 
             } else if (winner === "computer") {
-            document.getElementById("winner").innerHTML ="You lose"
-
+                computerCounter = computerCounter + 1
+                computerCounterSpan.innerHTML = computerCounter;
+                
             } else if (winner === "undecided") {
-            document.getElementById("winner").innerHTML ="It's a tie"
+                drawsCounter = drawsCounter + 1
+                document.getElementById("drawsCounter").innerHTML = drawsCounter;
+            } 
+            
+            
+            // Egen styling for det astetiske :)
+            if (counter > 0) {  
+                playerCounterSpan.style.color = "green";
+            } 
+            if (counter > 0) {  
+                computerCounterSpan.style.color = "red";
             }
-
+          
+            
 
             //And display the button for playing again:
-            document.getElementById("replay").style.display = "block"
+            document.getElementById("replay").style.display = "block";
+
+           
+
+
         
         }
 
