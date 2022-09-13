@@ -24,6 +24,7 @@
 
         //Klargjør variabler for utregning
         const startingPoint = 255
+<<<<<<< Updated upstream
         let checksum = 0
              // Feil 1. her Endra jeg fra const til let fordi jeg prøve checksummen på linje 43
         const multiplier = 3
@@ -35,19 +36,36 @@
 
         //Klargjør variabel for bygging av tekst
         let greeting = ""; //Feil 3.  fjerna en t fra "let" fordi det bare skal være en t.
+=======
+        let checksum = 0 //Feil #1, Endra fra const til let fordi chesksummen ikke er konstant
+             
+        const multiplier = 3
+        //Ditt navn. PS: Bytt denne til ditt navn.  // Feil #2 Satt inn en eksta / fordi det er en kommentar.
+         
+        //Selve navnebyttet er ikke en feil som teller mot de 10 feilene du skal finne.
+        const myName = "Jonas";  // Feil #3 Navnet mangler "hermetegn"
+           
+        //Klargjør variabel for bygging av tekst
+        let greeting = "";  // Feil #4, Skrivefeil. Fjerna en t fra "let". 
+>>>>>>> Stashed changes
             
         const saluteClass = "pyro";
 
         //Kontroller datatype
         if (typeof myName === "string") {
+<<<<<<< Updated upstream
             checksum = startingPoint * multiplier //Feil 4. Checksum hadde to m`er, så jeg fjerna to av dem
             
 
+=======
+            checksum = startingPoint * multiplier // Feil #5 Checksum hadde to m`er for mye, fjerna to m'er
+        
+>>>>>>> Stashed changes
         } else {
             checksum = startingPoint
         }
-
         //Kontroller checksum
+<<<<<<< Updated upstream
         if(checksum !== 765) { //Feil 5. fjerna ett = tegn
             
             greeting = "beklager"
@@ -62,6 +80,22 @@
             saluteElement.setAttribute("class",saluteClass) //Feil 9. I denne linja ga jeg saluteClass en stor C.
             document.body.setAttribute("class","success")
          
+=======
+        if(checksum !== 765) { // Feil #6 Fjerna ett = tegn for mye, fjerna ett
+           
+            greeting = "beklager"
+        } else {
+            greeting = "gratulerer"
+
+            const output = greeting + ", " + myName + "<br />Du klarte det!" //Feil #7 "greeting" hadde tre e`er (skrivefeil), så jeg fjerna en e
+            const textElement = document.getElementById("text"); //Feil #8 endra til små bokstaver fordi det må være likt med "text" på linje 11.
+            const saluteElement = document.getElementById("salute") // Feil #9 Endra til liten D i "getElementById" fordi det er skrevet feil.
+            textElement.removeAttribute("class")
+            textElement.innerHTML = output
+            saluteElement.setAttribute("class",saluteClass) //Feil #10 I denne linja ga jeg "saluteClass" en stor C. Fordi det er to ord.
+            document.body.setAttribute("class","success")
+            
+>>>>>>> Stashed changes
         }
 
         /*
