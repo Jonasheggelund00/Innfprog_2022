@@ -192,6 +192,8 @@
         // the player's choice (rock, paper or scissors)
         function play(playerSign) {
             document.getElementById("winner").innerHTML = "*Drumroll*" //Del av oppgave 7: Viser brukeren at man venter på svar
+            document.getElementById("winner").style.backgroundColor= "#006b5e"
+            document.getElementById("winner").style.color = "#ffea00";
             console.log("Player selected: " + playerSign)
             // First, we mark the players choice by making selection visible (display: block)
             const selection = document.getElementById("selection")
@@ -276,46 +278,51 @@
              * _På linje 254 skjer det en utskrift av hvem som er vinneren
              winnerDiv er bare en betyr: document.getElementById("winner") _ 
              */
-            //oppgave 7
+            
             
            
              //oppgave 3 - endre farge på <div> id winner til gull
-            if (winner)  { 
-                document.getElementById("winner").style.backgroundColor = "Gold";
+            // oppgave 7 - satt på en delay her også for at gullfargen ikke skal vises før svaret kommer.
+            
+            setTimeout(function() {
+            if (winner === "player")  { 
+                winnerDiv.style.backgroundColor = "Gold";
             }
             //Gjorde teksten grå for bedre leslighet
-            if (winner) {
-                document.getElementById("winner").style.color = "#4b4737"; 
-            }
+            if (winner === "player") {
+                winnerDiv.style.color = "#4b4737"; 
+            }}, 1000);
+       
             
-
+           
             
 
             //Now, lastly, let's update the counter on how many games we have played:
             counter = counter + 1
             
+            const counterDiv = document.getElementById("counter") // lagde denne for å gjøre ting lettere
 
-            document.getElementById("counter").innerHTML = counter
+            counterDiv.innerHTML = counter
             /* OPPGAVE 2.3: FORKLAR HVA SOM SKJER PÅ LINJE 262
              * _Linje 262 skriver ut hvor mange ganger man har spilt på nytt_ 
              */
 
              // oppgave 4
              if (counter > 1) { 
-                document.getElementById("counter").style.color = "#be5944";
+                counterDiv.style.color = "#be5944";
              }
             
              // oppgave 5 Og 7
-                 setTimeout(function() { 
-                 if (winner === "player") {
-                     winnerDiv.innerHTML ="You win";
+            setTimeout(function() { 
+            if (winner === "player") {
+                winnerDiv.innerHTML ="You win";
 
-                 } else if (winner === "computer") {
-                     winnerDiv.innerHTML ="You lose";
+            } else if (winner === "computer") {
+                winnerDiv.innerHTML ="You lose";
 
-                 } else if (winner === "undecided") {
-                     winnerDiv.innerHTML ="It's a tie";
-                }}, 1000);
+            } else if (winner === "undecided") {
+                winnerDiv.innerHTML ="It's a tie";
+            }}, 1000);
         
             
 
