@@ -128,7 +128,7 @@
     <section id="gamearea">
         <div id="playerSigns">
             <h2 id="instruction">Play your hand:<span id="choice"></span></h2>
-            <button type="button" onClick="play('rock')" id="rockButton" class="playerChoice"><img src="rock.jpg" alt="Rock" /></button> <!-- 3 "Play" var skrevet med to y'er. -->
+            <button type="button" onClick="play('rock')" id="rockButton" class="playerChoice"><img src="rock.jpg" alt="Rock" /></button> <!-- Oppgave 1, feil 3. "Play" var skrevet med to y'er. -->
             <button type="button" onClick="play('paper')" id="paperButton" class="playerChoice"><img src="paper.jpg" alt="Paper" /></button>
             <button type="button" onClick="play('scissors')" id="scissorsButton" class="playerChoice"><img src="scissors.jpg" alt="Scissors" /></button>
         </div>
@@ -147,7 +147,7 @@
             <!-- A hidden button to show after a game, that resets and let the player play again -->
             <button id="replay" onClick="restartGame()">Play again</button>
         </div>
-            <!--Oppgave 6 HTML-->
+            <!--Oppgave 6 HTML - skriver, "Player wins", "Computer wins" og "Draws" under "Number og games played", med en id som henger sammen med js. delen.-->
             <div>Player wins: <span id="playerCounter">0</span> </div>
             <div>Computer wins: <span id="computerCounter">0</span> </div>
             <div>Draws: <span id="drawsCounter">0</span> </div>
@@ -176,7 +176,7 @@
          * On mouseover, show the alt-text of the image inside the button and add animation class
          * On mouseout, remove the text and class
          */
-        buttons.forEach(button => { // 2 buttons stod med to ss'er
+        buttons.forEach(button => { // oppgave 1, Feil 2 buttons stod med to ss'er
             button.addEventListener("mouseover", (event) => {
                 document.getElementById("choice").innerHTML = button.childNodes[0].alt
                 document.getElementById("choice").setAttribute("class","choiceAnimate")
@@ -192,8 +192,8 @@
         // the player's choice (rock, paper or scissors)
         function play(playerSign) {
             document.getElementById("winner").innerHTML = "*Drumroll*" //Del av oppgave 7: Viser brukeren at man venter på svar
-            document.getElementById("winner").style.backgroundColor= "#006b5e"
-            document.getElementById("winner").style.color = "#ffea00";
+            document.getElementById("winner").style.backgroundColor= "#006b5e" //Del av oppgave 7: hvis man ikke har denne koden så er det sånn at, etter man vinner, så skiter ikke boksen tilbake til den blå fargen. fortsetter å være gull.
+            document.getElementById("winner").style.color = "#ffea00"; //Del av oppgave 7: Gjør teksten gul, når det er blå bakgrunn.
             console.log("Player selected: " + playerSign)
             // First, we mark the players choice by making selection visible (display: block)
             const selection = document.getElementById("selection")
@@ -220,11 +220,11 @@
             //Lets write the computer selection to the console to make sure we have a valid hit:
             console.log("Computer selected: " + computerSign)
             // Good! Now we also have to show this on the website, by making #computer visible and filling it with HTML:
-            const computer = document.getElementById("computer") //4 D'en i "id" var stor
+            const computer = document.getElementById("computer") //Oppgave 1, feil 4. D'en i "id" var stor
             
             computer.style.display = "block"
-            /* OPPGAVE 2.1: FORKLAR HVA SOM SKJER PÅ LINJE 208
-             * _Koden på linje 208 lager en svart boks som viser hva computeren valgte av stein, saks eller papir. _ 
+            /* OPPGAVE 2.1: FORKLAR HVA SOM SKJER PÅ LINJE 225
+             * _Koden på linje 225 lager en svart/blå boks som viser hva computeren valgte av stein, saks eller papir. _ 
              */
 
             computer.innerHTML = "Computer selects " + computerSign
@@ -264,32 +264,28 @@
                 }
             }
 
-             
-
             //Now we have checks to set the winner. Let's write it to the website.
             //Now you know the drill: show #winner by display: block and fill it with HTML:
             const winnerDiv = document.getElementById("winner")
             winnerDiv.style.display = "block"
             
-            
-
-            //winnerDiv.innerHTML = "The winner is " + winner
-            /* OPPGAVE 2.2: FORKLAR HVA SOM SKJER PÅ LINJE 254
-             * _På linje 254 skjer det en utskrift av hvem som er vinneren
+            //winnerDiv.innerHTML = "The winner is " + winner //Kommenterer ut denne for at den ikke skal avsløre hvem som vinner
+            /* OPPGAVE 2.2: FORKLAR HVA SOM SKJER PÅ LINJE 272
+             * _På linje 272 skjer det en utskrift av hvem som er vinneren
              winnerDiv er bare en betyr: document.getElementById("winner") _ 
              */
             
             
            
-             //oppgave 3 - endre farge på <div> id winner til gull
-            // oppgave 7 - satt på en delay her også for at gullfargen ikke skal vises før svaret kommer.
+             //oppgave 3 - endre farge på resultat boksen winner til gull om spillern vinner spillet.
+            // oppgave 7 - satt på en delay (setTimeout) her også for at gullfargen ikke skal vises før svaret kommer.
             
             setTimeout(function() {
-            if (winner === "player")  { 
+                if (winner === "player")  { 
                 winnerDiv.style.backgroundColor = "Gold";
             }
-            //Gjorde teksten grå for bedre leslighet
-            if (winner === "player") {
+                //Gjorde teksten grå for bedre leslighet
+                 if (winner === "player") {
                 winnerDiv.style.color = "#4b4737"; 
             }}, 1000);
        
@@ -303,30 +299,31 @@
             const counterDiv = document.getElementById("counter") // lagde denne for å gjøre ting lettere
 
             counterDiv.innerHTML = counter
-            /* OPPGAVE 2.3: FORKLAR HVA SOM SKJER PÅ LINJE 262
-             * _Linje 262 skriver ut hvor mange ganger man har spilt på nytt_ 
+            /* OPPGAVE 2.3: FORKLAR HVA SOM SKJER PÅ LINJE 301
+             * _Linje 301 skriver ut hvor mange ganger man har spilt på nytt_ 
              */
 
-             // oppgave 4
+             // oppgave 4 - Skriver ut at hvis man har spilt over 1 gang, så skal tallet i setningen "Number of games played" skrives ut i rødt.
              if (counter > 1) { 
                 counterDiv.style.color = "#be5944";
              }
             
-             // oppgave 5 Og 7
+             // oppgave 5 - endre utskriften av hvem som vinner med bruk av betinget logikk
+              //Oppgave 7 - koden bruker 1 sekund før den viser vinneren i et spill med hjelp av (setTimeout funksjonen).
             setTimeout(function() { 
-            if (winner === "player") {
-                winnerDiv.innerHTML ="You win";
+                 if (winner === "player") {
+                     winnerDiv.innerHTML ="You win";
 
-            } else if (winner === "computer") {
-                winnerDiv.innerHTML ="You lose";
+                 } else if (winner === "computer") {
+                     winnerDiv.innerHTML ="You lose";
 
-            } else if (winner === "undecided") {
-                winnerDiv.innerHTML ="It's a tie";
-            }}, 1000);
+                 } else if (winner === "undecided") {
+                    winnerDiv.innerHTML ="It's a tie";
+                 }}, 1000);
         
             
 
-            //oppgave 6 - JavaScript del
+            //oppgave 6 - JavaScript del. Vi teller hvor mange ganger spilleren vinner, datamaskinen vinner, eller at det blir uavgjort. 
 
            const playerCounterSpan = document.getElementById("playerCounter")
            const computerCounterSpan = document.getElementById("computerCounter")
@@ -347,20 +344,16 @@
             
             // Egen styling for det astetiske :)
             if (counter > 0) {  
-                playerCounterSpan.style.color = "green";
+                playerCounterSpan.style.color = "green"; //Player wins blir skrevet ut i fargen grønn
             } 
             if (counter > 0) {  
-                computerCounterSpan.style.color = "red";
+                computerCounterSpan.style.color = "red"; // computer wins blir skrevet ut i fargen rød
             }
           
             
 
             //And display the button for playing again:
             document.getElementById("replay").style.display = "block";
-
-           
-        
-
         
         }
 
@@ -383,7 +376,7 @@
         }
 
         //Function for random numnber, fetched from MDN web docs:
-        function getRandomInt(max) { // 1 bytta ut  "unction" med "function"
+        function getRandomInt(max) { // Oppgave 1, feil 1.  Bytta ut  "unction" med "function"
             return Math.floor(Math.random() * max);
         }
 

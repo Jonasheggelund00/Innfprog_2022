@@ -41,11 +41,9 @@
         console.log(gameConfig)
 
         //PLAYERNAME - INITITAL PRINT
-       // const playerName = "Hiof"
         document.getElementById("playername").innerHTML = gameConfig.playerName 
         
         //COINS - INITIAL PRINT
-        //let coins = 10
         let coinsPrint = ""
         if(gameConfig.coins  > 0) {
             coinsPrint = gameConfig.coins 
@@ -63,7 +61,6 @@
         }
 
         //LEVEL - INITIAL PRINT
-        //level = 1
         document.getElementById("level-count").innerHTML = gameConfig.level
 
         //ARMORY - INITIAL PRINT
@@ -101,9 +98,20 @@
         //Gjøre klar en variabel  for armoury-HTML-rader
         let armouryHTML = ""
 
-            armoury.map(weapon => armouryHTML += `<tr><td>${weapon.weaponName}</td></tr>`)
+        let armouryPoints = 0
+
+            armoury.map(weapon => {
+             weapon.level > 0 ? armouryHTML += `<tr>
+                <td><img src="img/${weapon.weaponIcon}.png" />${weapon.weaponName}</td>
+                <td ${weapon.level > 9 ? `class="gold"` : null}>${weapon.level}</td>
+                </tr>`: null
+                armouryPoints += weapon.level * weapon.value
+            })
+               
 
             document.getElementById("showhide").innerHTML = armouryHTML
+
+            console.log(armouryPoints)
 
 
         /* HTML-STRUKTUREN TIL EN ARMORY-RAD:
@@ -116,7 +124,7 @@
         
 
         //POINTS - INITIAL PRINT
-        let points = (gameConfig.coins * 5) + (longsword * 5) + (warhammer * 15) + (battleaxe * 20) + (armour * 25)
+        let points = (gameConfig.coins * 5) + armouryPoints
         document.getElementById("points-count").innerHTML = points
         
         
