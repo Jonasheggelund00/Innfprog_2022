@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,22 +8,26 @@
     <title>Catch the aliens</title>
     <link href="catchaliens.css" rel="stylesheet" media="all" />
 </head>
+
 <body>
     <header>
         <p>Time left: <span id="time">60</span> Aliens caught: <span id="points">0</span></p>
     </header>
-    
+
     <section>
-        <canvas id="gamearea"></canvas>        
+        <canvas id="gamearea"></canvas>
     </section>
 
-    <p><a href="https://www.flaticon.com/free-icons/alien" title="alien icons">Alien icon created by Smashicons</a>, 
-    <a href="https://www.flaticon.com/free-icons/spaceship" title="spaceship icons">Spaceship icons created by Freepik</a> - Flaticon</p>
+    <p><a href="https://www.flaticon.com/free-icons/alien" title="alien icons">Alien icon created by Smashicons</a>,
+        <a href="https://www.flaticon.com/free-icons/spaceship" title="spaceship icons">Spaceship icons created by
+            Freepik</a> - Flaticon
+    </p>
     <aside id="history">
-        <h2>Stats</h2> 
-        <ol id="points"></ol> <!----------wygtryetryer6tuert-->
+        <h2>Stats</h2>
+        <ol id="points"></ol>
     </aside>
-    <button type="button" onclick="playGame()" id="startButton"> Start game</button> <!--Oppgave 4 2) - Lage knapp for å starte spill-->
+    <button type="button" onclick="playGame()" id="startButton"> Start game</button>
+    <!--Oppgave 4 2) - Lage knapp for å starte spill-->
     <script>
         //Sett opp Canvas:
         const canvas = document.getElementById("gamearea") //Oppgave 1 - Feil 5, Stor Y i "BY"
@@ -31,17 +36,20 @@
         const ctx = canvas.getContext("2d");
 
         //Gjør klar spillinformasjon
-        let countdown = 10 //Oppgave 3 2) - spille varer nå i 60 sekunder istedet for 10.
-        let playerCount = 1 //
+        let countdown = 10
         let iconsize = 64
-        let gameOver = false 
-        const player = { 
-            speed: 2.5
-         } //oppgave 3 4) - endre til 2.5 fordi tilsvarer 250?.
-        const enemy = { }
+        let gameOver = false
+        const player = {
+            speed: 3 //oppgave 3 4) - endra til 3 fordi syntes det var en god fart, tilsvarer 300?.
+        } 
+        const enemy = {}
+        const enemy2 = {} // Oppgave 7 - const enemy2 for zorberen
         let aliensCaught = 0; //oppgave 5 - endra fra 10 til 0
-        let history = ["Highscore: "] //oppgave 5
+        let zorberCaught = 0; // oppgave 7 - Lagde ny variabel for zomberene
+        let history = ["Score: "] //oppgave 5 skriver score: for å vise score.
         let intervallId = null //del av oppgave 4
+        let animationFrameId; // del av cancelAnimationFrame
+
         history.length < 1 ? document.getElementById("history").style.display = "none" : document.getElementById("history").style.display = "block"
 
         //Gjør klar bakgrunnsbilde for spiller
@@ -56,20 +64,38 @@
         enemyImage.onload = () => { enemyLoaded = true; }
         enemyImage.src = "img/alien.png"
 
+        // oppgave 7 - Gjør klar bakgrunnsbilde for zomber
+        let enemyLoaded2 = false;
+        const enemyImage2 = new Image();
+        enemyImage2.onload = () => { enemyLoaded2 = true; }
+        enemyImage2.src = "img/zorber.png"
+
         //Lag en funksjon som kjører i gang spillelementene
         //Plasser spilleren i midten av brettet, og fienden et vilkårlig sted innenfor spillbrettet
-        function drawCharacters() {
+
+        function drawCharacterPlayer() { //liker ikke at spilleren ble resettet når spilleren treffer aliensene, så putta dette i en egen funksjon :)
             player.x = canvas.width / 2;
             player.y = canvas.height / 2;
+        }
+
+        function drawCharacters() {
+
             enemy.x = (iconsize / 2) + (Math.random() * (canvas.width - iconsize));
             enemy.y = (iconsize / 2) + (Math.random() * (canvas.height - iconsize));
+
+        }
+
+        function drawCharacterZomber() {  // oppgave 7 -  lagde ny funksjon for zomber, dette måtte gjøres fordi om jeg har de i samme drawCharacters() funksjon, så resetes begge ikonene når jeg treffer en av dem
+            enemy2.x = (iconsize / 2) + (Math.random() * (canvas.width - iconsize));
+            enemy2.y = (iconsize / 2) + (Math.random() * (canvas.height - iconsize));
+
         }
         /************************************************************** 
          OPPGAVE 2 - KOMMENTAR 1
          Forklar hva de fire linjene i funksjonen drawCharacters() gjør
-         -Canvas handler om spillområdet, derfor er 2 en verdi for hvor spilleren skal være når spillet starter. (Spillområdet er definert tidligere i koden)
-         Siden Width handler om x aksen og height om y aksen, så starter spilleren på midten, siden verdiene av aksene er X=2 y=2.
-         Ettersom at vi ikke skal styrer hva maskinen skal gjøre, så er det satt tilfeldig matte slik at den flytter seg til forskjellig steder for hver gang man fanger dem.  -
+         -Canvas handler om spillområdet. (Spillområdet er definert tidligere i koden)
+         Siden Width handler om x aksen og height om y aksen, så starter spilleren på midten, siden verdiene av aksene deles på 2.
+         Ettersom at vi ikke skal styrer hva maskinen skal gjøre, så er det satt tilfeldig matte slik at aliensene flytter seg til forskjellig steder for hver gang man fanger dem.  
         ***************************************************************/
 
         //Sjekk om spilleren har trykket ned (og holder) en tast:
@@ -82,149 +108,164 @@
         let down = false
         //Set retningsvariabel til true hvis riktig piltast er trykket:
         function buttonPressed(event) { //Oppgave 1 - Feil 1, Glemte "{" etter paranteset
-            if(event.key === "ArrowLeft") { left = true } 
-            if(event.key === "ArrowRight") { right = true } 
-            if(event.key === "ArrowUp") { up = true } //Oppgave 1 - Feil 2, Var et punktum på slutten av linjen
-            if(event.key === "ArrowDown") { down = true } 
+            if (event.key === "ArrowLeft") { left = true }
+            if (event.key === "ArrowRight") { right = true }
+            if (event.key === "ArrowUp") { up = true } //Oppgave 1 - Feil 2, Var et punktum på slutten av linjen
+            if (event.key === "ArrowDown") { down = true }
         }
         //Sett retningsvariabel til false hvis piltasten blir sluppet opp:
         function buttonReleased(event) {
-            if(event.key === "ArrowLeft") { left = false } 
-            if(event.key === "ArrowRight") { right = false } 
-            if(event.key === "ArrowUp") { up = false } 
-            if(event.key === "ArrowDown") { down = false } 
+            if (event.key === "ArrowLeft") { left = false }
+            if (event.key === "ArrowRight") { right = false }
+            if (event.key === "ArrowUp") { up = false }
+            if (event.key === "ArrowDown") { down = false }
         }
         /************************************************************** 
          OPPGAVE 2 - KOMMENTAR 2
          Forklar hvorfor vi trenger å sjekke både når en knapp er trykket ned,
          og når den er sluppet opp igjen. 
-         -Fordi maskinen er dum og skjønner ikke selv at en knapp skal gå opp når man har trykket på den.
-         Derfor sier koden til maskinen at når knappen trykkes, så er det "true" (som betyr at når knappen trykkes, så skal det man har fortalt knappen, det skal skje).
+         -Fordi maskinen er dum og skjønner ikke at hendelsen skal sluttes når man slepper knappen.
+         Derfor sier koden til maskinen at når knappen trykkes, så er det "true" (som betyr at når knappen trykkes, så skal det man har fortalt knappen skje).
          Og når man slipper knappen, så er det "false" (som betyr at det man har satt igang, skal avsluttes)
          Om man ikke skriver ButtonReleased, så bare fortsetter det.
         ***************************************************************/
-        
+
         //Funksjon som modifiserer spillerens posisjon på spillbrettet:
         function playerMovement(speedModifier) {
             //Flytt player i riktig retning
             left ? player.x -= player.speed * (speedModifier) : null //Oppgave 1 - Feil 3, Ett spørsmåltegn for mye
-            right ? player.x += player.speed * speedModifier : null
-            up ? player.y -= player.speed * speedModifier : null
-            down ? player.y += player.speed * speedModifier : null
+            right ? player.x += player.speed * (speedModifier) : null
+            up ? player.y -= player.speed * (speedModifier) : null
+            down ? player.y += player.speed * (speedModifier) : null
 
             //Sjekk om player treffer fienden
-            if(
+            if (
                 player.x <= (enemy.x + (iconsize / 2)) &&
                 player.y <= (enemy.y + (iconsize / 2)) &&
                 enemy.x <= (player.x + (iconsize / 2)) &&
                 enemy.y <= (player.y + (iconsize / 2))
+
             ) {
                 aliensCaught++
                 drawCharacters()
-               
+
             }
-            
-           
+
+            if ( // oppgave 7 - lagde ny If setning for når spilleren kolliderer med zomberene
+                player.x <= (enemy2.x + (iconsize / 2)) &&
+                player.y <= (enemy2.y + (iconsize / 2)) &&
+                enemy2.x <= (player.x + (iconsize / 2)) &&
+                enemy2.y <= (player.y + (iconsize / 2))
+            ) {
+                aliensCaught += 3 //gjør sånn at alienscought plusses med tre når man treffer en Zomber
+                drawCharacterZomber()
+
+            }
+
         }
 
         //Lag funksjon for nedtelling
         function countdownFunction() {
             countdown--
-            if(countdown <= 0) {
+            if (countdown <= 0) {
                 clearInterval(intervallId)// https://www.w3schools.com/jsref/met_win_setinterval.asp
                 gameOver = true
                 countdown = 0
                 playerLoaded = false
                 enemyLoaded = false
-                history.push(aliensCaught) // oppgave 5 - pushe poengsummen til "stats" når tiden har rent ut
-                
-
+                enemyLoaded2 = false //oppgave 7 - fjerner zorber når tiden er ute
+                history.push(aliensCaught) // oppgave 5 - pushe poengsummen til "stats" når tiden har rent ut.
             }
-            
 
-           
         }
         /************************************************************** 
          OPPGAVE 2 - KOMMENTAR 3
          Forklar hva linjene i funksjonen countDownFunction() gjør
-         - Dette er en funksjon som sier det at: Hvis telleren er på 0 eller mindre, så er det game over(ettersom at det er gameOver = true), countdownen skal stå på 0, 
-         og spilleren/Alienen skal ikke vises på skjermen..... -
+         - Dette er en funksjon som sier det at: Hvis telleren er på 0 eller mindre, så er det game over(ettersom at gameOver = true), countdownen skal stå på 0, 
+         og spilleren/Alienen skal ikke vises på skjermen, siden de står som "false"-
         ***************************************************************/
 
-        
+
 
         //Funksjon som tegner/fyller ut alle spill-elementene i canvas:
         function drawGameElements() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             playerLoaded ? ctx.drawImage(playerImage, player.x, player.y) : null
             enemyLoaded ? ctx.drawImage(enemyImage, enemy.x, enemy.y) : null
+            enemyLoaded2 ? ctx.drawImage(enemyImage2, enemy2.x, enemy2.y) : null //oppgave 7 - tegner zorberen
             gameOver ? ctx.fillText("GAME OVER!", 130, 200) : null //Oppgave 3: flytte "Game Over" teksten til midten. Skifte 300 til 130. Justerer hvor teksten ligger på x-aksen
             document.getElementById("time").innerHTML = countdown
             document.getElementById("points").innerHTML = aliensCaught
-            
+
             if (gameOver) {
                 document.getElementById("startButton").style.display = "block"; //oppgave 4 5) - Knappen kommer til synet når det er game over  
-                
+
             }
-         
+            cancelAnimationFrame(animationFrameId) // https://css-tricks.com/using-requestanimationframe/ 
+            /*
+            Få farten til å være samme:
+            Dette var det jeg sleit mest med under hele deleksamen 3, men etter ekstremt mye googling og testing, så var det cancelAnimationFrame som gjorde det.
+            Problemet var jo det at for hver gang man trykket på start knappen så kjørte den requestAnimationFrame til romskipet dobbelt opp.
+            Derfor måtte jeg skrive det at: if GameOver, så skal requestAnimationFrame avsluttes.
+            */
+            // Oppgave 6 - når man treffer kantene av canvaset nå så dukker man opp på motsatt side av der mna traff.
+            if (player.x > canvas.width) {
+                player.x = 0
+            } else if (player.x < canvas.width - canvas.width) {
+                player.x = canvas.width
+            }
+
+
+            if (player.y > canvas.height) {
+                player.y = 0
+            } else if (player.y < canvas.height - canvas.height) {
+                player.y = canvas.height
+            }
+
+            //Oppgave 3 1)
+            ctx.font = "80px Space Mono";
+            ctx.fillStyle = "red";
+
         }
-      
 
         //Funksjon som kjører spillet
         function renderGame() { //Oppgave 1 - Feil 4, Glemte "n" i Function
-            playerMovement(1 / playerCount) //.....
+            playerMovement(1)
             drawGameElements()
-            requestAnimationFrame(renderGame)
+            animationFrameId = requestAnimationFrame(renderGame)
 
-            
-            
-            
         }
 
-           //Oppgave 3 1)
-            ctx.font = "80px Space Mono";
-            ctx.fillStyle = "red";
-        
-
-
         // Cross-browser support for requestAnimationFrame (https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame)
-        requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;
-        
+        //requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || window.mozRequestAnimationFrame;
+
         //Funksjon for start/restart spill
         function playGame() {
             //Startverdier
-            countdown = 5
+            countdown = 60//Oppgave 3 2) - spille varer nå i 60 sekunder istedet for 10.
             gameOver = false
             playerLoaded = true //playerLoaded endra til True fordi den ikke ble vist....
             enemyLoaded = true
+            enemyLoaded2 = true // opggave 7 - laster inn zomber etter knappetrykk.
+            aliensCaught = 0 // Hver gang man trykker på Start Game - knappen, så resettes Aliens Caught: til 0.
+
             //Tegne spill-elementer ved oppstart
             drawCharacters()
             renderGame()
+            drawCharacterPlayer() // kjører funksjon for spiller (at spiller ikon vises)
+            drawCharacterZomber() // oppgave 7 - kjører funksjonen til Zomberene
             document.getElementById("startButton").style.display = "none";
+
             //Kjør funksjonen for nedtelling hver sekund (1000. milisekund)
             intervallId = setInterval(countdownFunction, 1000) //Flytta ned inni PlayGame funksjonen for at det er knappen som skal kalle på den
+            //oppgave 5 - skriver et en map for å kjøre gjennom "alienscaught" som da skriver ut i history/stats.
             document.getElementById("history").innerHTML = "<h2>Stats</h2>"
             history.map(aliensCaught => document.getElementById("history").innerHTML += `<li>${aliensCaught}</li>`)
-            playerCount++
-            aliensCaught = 0 // Hver gang man trykker på Start Game - knappen, så resettes Aliens Caught: til 0.
-           
-          console.log(player.speed)
-           
-           
+
         }
-        
-        
-       
-            
-       
-
-
-        
-
-       
 
     </script>
 
 </body>
-</html>
 
+</html>
